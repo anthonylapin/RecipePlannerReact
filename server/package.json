@@ -4,7 +4,13 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon --exec babel-node ./src/index.js"
+    "start": "node ./dist/index.js",
+    "build": "npm run buildServer && npm run buildClient",
+    "buildServer": "npm run babel ./src -- --out-dir ./dist --copy-files --presets=@babel/preset-env",
+    "buildClient": "cd ../client && npm run build && cd ../server",
+    "babel": "./node_modules/.bin/babel",
+    "dev": "nodemon --exec babel-node ./src/index.js",
+    "client": "cd ../client && npm start"
   },
   "keywords": [],
   "author": "",
@@ -15,6 +21,7 @@
     "express": "^4.17.1"
   },
   "devDependencies": {
+    "@babel/cli": "^7.13.16",
     "@babel/core": "^7.14.0",
     "@babel/node": "^7.13.13",
     "@babel/preset-env": "^7.14.1",

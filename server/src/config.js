@@ -1,6 +1,14 @@
 import "dotenv/config";
+import path from "path";
 
-export const pathToRecipesJson =
-  process.env.PATH_TO_RECIPES_JSON || `${__dirname}/../static`;
+const staticFolder = "static";
+const recipeDbFile = "recipes.json";
 
-export const port = process.env.PORT || 5000;
+export const pathToRecipesJson = path.join(
+  __dirname,
+  staticFolder,
+  recipeDbFile
+);
+
+export const clientStaticPath = process.env.STATIC_PATH;
+export const clientStaticFile = process.env.STATIC_FILE;
