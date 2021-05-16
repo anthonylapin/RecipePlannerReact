@@ -2,18 +2,20 @@ import express from "express";
 import {
   clientStaticFile,
   clientStaticPath,
-  pathToRecipesJson,
+  isProduction,
+  developmentStaticFile,
 } from "./config";
 
 const app = express();
 
-if (process.env.NODE_ENV === "production") {
+// app.use("/api", router);
+
+if (isProduction) {
   app.use(express.static(clientStaticPath));
-  app.get("*", (req, res) => {
-    res.sendFile(clientStaticFile);
-  });
 }
 
-console.log(pathToRecipesJson);
+app.get("*", (req, res) => {
+  res.sendFile(isProduction ? clientStaticFile : developmentStaticFile);
+});
 
 app.listen(5000, () => console.log(`Server is on port ${5000}`));
