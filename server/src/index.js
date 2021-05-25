@@ -5,10 +5,18 @@ import {
   isProduction,
   developmentStaticFile,
 } from "./config";
+import cors from "cors";
+import morgan from "morgan";
+import router from "./routes";
+import errorMiddleware from "./middleware/errorMiddleware";
 
 const app = express();
 
-// app.use("/api", router);
+app.use(morgan(isProduction ? "combined" : "dev"));
+app.use(cors());
+app.use(express.json());
+app.use("/api", router);
+app.use(errorMiddleware);
 
 if (isProduction) {
   app.use(express.static(clientStaticPath));

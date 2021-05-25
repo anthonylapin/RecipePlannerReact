@@ -1,7 +1,5 @@
-import React from "react";
+import RecipeForm from "./RecipeForm";
 
-const CreateRecipe = () => {
-  return <h1>CreateRecipe recipe</h1>;
-};
-
-export default CreateRecipe;
+export default function CreateRecipe() {
+  return <RecipeForm />;
+}
