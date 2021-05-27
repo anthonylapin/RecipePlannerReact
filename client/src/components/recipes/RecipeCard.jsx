@@ -1,5 +1,7 @@
 import { useState } from "react";
 import { Button, Card, Nav, ButtonGroup, ListGroup } from "react-bootstrap";
+import { useDispatch } from "react-redux";
+import { deleteRecipe } from "../../asyncActions/recipes";
 
 const cardNavKeys = {
   defaultInfo: "#default",
@@ -16,25 +18,32 @@ const IngredientsList = ({ ingredients }) => (
   </ListGroup>
 );
 
-const CardDefaultData = ({ name, instruction }) => (
-  <Card.Body>
-    <Card.Title>{name}</Card.Title>
-    <Card.Text>{instruction}</Card.Text>
-    <ButtonGroup>
-      <Button variant="secondary">Edit</Button>
-      <Button variant="danger">Delete</Button>
-    </ButtonGroup>
-  </Card.Body>
-);
+const CardDefaultData = ({ id, name, instruction }) => {
+  const dispatch = useDispatch();
+  return (
+    <Card.Body>
+      <Card.Title>{name}</Card.Title>
+      <Card.Text>{instruction}</Card.Text>
+      <ButtonGroup>
+        <Button variant="secondary" href={`/recipes/update/${id}`}>
+          Edit
+        </Button>
+        <Button variant="danger" onClick={() => dispatch(deleteRecipe(id))}>
+          Delete
+        </Button>
+      </ButtonGroup>
+    </Card.Body>
+  );
+};
 
-export default function RecipeCard({ name, instruction, ingredients }) {
+export default function RecipeCard({ id, name, instruction, ingredients }) {
   const [activeNavKey, setActiveNavKey] = useState(cardNavKeys.defaultInfo);
 
   const renderCardBody = () =>
     activeNavKey === cardNavKeys.ingredients ? (
       <IngredientsList ingredients={ingredients} />
     ) : (
-      <CardDefaultData name={name} instruction={instruction} />
+      <CardDefaultData name={name} instruction={instruction} id={id} />
     );
 
   return (

@@ -1,6 +1,10 @@
 import React from "react";
 import { Navbar, Nav } from "react-bootstrap";
-import { recipeRoute, recipeCreateRoute } from "../../constants";
+import {
+  recipeRoute,
+  recipeCreateRoute,
+  shoppingCartRoute,
+} from "../../constants";
 
 const NavigationBar = () => {
   return (
@@ -10,7 +14,7 @@ const NavigationBar = () => {
         <Nav className="mr-auto">
           <Nav.Link href={recipeRoute}>Recipes</Nav.Link>
           <Nav.Link href={recipeCreateRoute}>Create Recipe</Nav.Link>
-          <Nav.Link href="#shoppingcart">Shopping Cart</Nav.Link>
+          <Nav.Link href={shoppingCartRoute}>Shopping Cart</Nav.Link>
         </Nav>
       </Navbar.Collapse>
     </Navbar>

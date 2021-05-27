@@ -5,12 +5,15 @@ import AppRouter from "./components/AppRouter";
 import { useDispatch } from "react-redux";
 import { useEffect } from "react";
 import { fetchRecipes } from "./asyncActions/recipes";
+import { loadingAction } from "./store/loadingReducer";
 
 function App() {
   const dispatch = useDispatch();
 
   useEffect(() => {
+    dispatch(loadingAction(true));
     dispatch(fetchRecipes());
+    dispatch(loadingAction(false));
   }, [dispatch]);
 
   return (

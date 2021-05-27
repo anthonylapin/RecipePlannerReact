@@ -1,136 +1,46 @@
 import { useState } from "react";
-import { Button, Form, Col, Row, Table } from "react-bootstrap";
+import { Button, Form } from "react-bootstrap";
+import { validate } from "validate.js";
+import IngredientForm from "../ingredients/IngredientForm";
+import IngredientTable from "../ingredients/IngredientTable";
+import { recipeFormConstraints } from "../../constraints";
 
 const initialFormState = {
+  id: "",
   name: "",
   instruction: "",
   ingredients: [],
 };
 
-const initialIngredientFormState = {
-  name: "",
-  quantity: 0,
-  measurementValue: "",
-};
-
-const recipeFormConstraints = {
-  name: {
-    presence: true,
-    length: {
-      minimum: 3,
-    },
-  },
-};
-
-const ingredientFormConstraints = {
-  name: {
-    presence: true,
-    length: {
-      minimum: 3,
-    },
-  },
-  quantity: {
-    presence: true,
-    numericality: {
-      greaterThanOrEqualTo: 0.001,
-    },
-  },
-  measurementValue: {
-    presence: true,
-    length: {
-      minimum: 1,
-    },
-  },
-};
-
-const IngredientForm = ({ onAdd }) => {
-  const [ingredient, setIngredient] = useState(initialIngredientFormState);
-
-  const handleFormControl = (e) => {
-    setIngredient({ ...ingredient, [e.target.id]: e.target.value });
-  };
-
-  const handleAddIngredient = (e) => {
-    e.preventDefault();
-    onAdd(ingredient);
-  };
-
-  return (
-    <>
-      <Row style={{ marginBottom: "1rem" }}>
-        <Col>
-          <Form.Control
-            placeholder="Name"
-            id="name"
-            onChange={handleFormControl}
-          />
-        </Col>
-        <Col>
-          <Form.Control
-            type="number"
-            placeholder="Quantity"
-            id="quantity"
-            onChange={handleFormControl}
-          />
-        </Col>
-        <Col>
-          <Form.Control
-            placeholder="Measurement Value"
-            id="measurementValue"
-            onChange={handleFormControl}
-          />
-        </Col>
-        <Col>
-          <Button
-            onClick={handleAddIngredient}
-            variant="secondary"
-            type="submit"
-          >
-            Add Ingredient
-          </Button>
-        </Col>
-      </Row>
-    </>
-  );
-};
-
-const IngredientTable = ({ ingredients, onRemove }) => (
-  <Table striped bordered hover size="sm">
-    <thead>
-      <tr>
-        <th>Ingredient Name</th>
-        <th>Ingredient Quantity</th>
-        <th>Ingredient Units</th>
-        <th></th>
-      </tr>
-    </thead>
-    <tbody>
-      {ingredients.map(({ name, quantity, measurementValue }, index) => (
-        <tr key={index}>
-          <td>{name}</td>
-          <td>{quantity}</td>
-          <td>{measurementValue}</td>
-          <td>
-            <Button variant="danger" onClick={() => onRemove(index)}>
-              Remove
-            </Button>
-          </td>
-        </tr>
-      ))}
-    </tbody>
-  </Table>
-);
-
-export default function RecipeForm() {
-  const [form, setForm] = useState(initialFormState);
+export default function RecipeForm({ onSubmit, recipe, isUpdate }) {
+  const [form, setForm] = useState(recipe ? recipe : initialFormState);
+  const [formErrors, setFormErrors] = useState({ name: "" });
 
   const handleFormControl = (e) =>
     setForm({ ...form, [e.target.id]: e.target.value });
 
   const handleAddIngredient = (ingredient) => {
+    const ingredientsAreEqual = (a, b) =>
+      a.name === b.name && a.measurementValue === b.measurementValue;
+    const existingIngredient = form.ingredients.find((i) =>
+      ingredientsAreEqual(i, ingredient)
+    );
+
     setForm({
       ...form,
-      ingredients: [...form.ingredients, ingredient],
+      ingredients: existingIngredient
+        ? [
+            ...form.ingredients.filter(
+              (i) => !ingredientsAreEqual(i, ingredient)
+            ),
+            {
+              ...existingIngredient,
+              quantity:
+                Number(ingredient.quantity) +
+                Number(existingIngredient.quantity),
+            },
+          ]
+        : [...form.ingredients, ingredient],
     });
   };
 
@@ -143,23 +53,42 @@ export default function RecipeForm() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(form);
+    const validateResult = validate(form, recipeFormConstraints);
+
+    if (!validateResult) {
+      setFormErrors({ name: "" });
+      setForm(initialFormState);
+      onSubmit(form);
+    } else {
+      setFormErrors({
+        name: validateResult.name.reduce((txt, err) => txt + err, ""),
+      });
+    }
   };
 
   return (
     <Form>
-      <h1 style={{ marginBottom: "1.5rem" }}>Create New Recipe</h1>
+      <h1 style={{ marginBottom: "1.5rem" }}>
+        {isUpdate ? "Update Recipe" : "Create New Recipe"}
+      </h1>
       <Form.Group controlId="name" style={{ marginBottom: "1rem" }}>
         <Form.Label>Name</Form.Label>
         <Form.Control
           onChange={handleFormControl}
           type="text"
           placeholder="Enter recipe name"
+          value={form.name}
         />
+        <Form.Text className="text-danger">{formErrors.name}</Form.Text>
       </Form.Group>
       <Form.Group controlId="instruction" style={{ marginBottom: "1rem" }}>
         <Form.Label>Instruction</Form.Label>
-        <Form.Control onChange={handleFormControl} as="textarea" rows={3} />
+        <Form.Control
+          onChange={handleFormControl}
+          value={form.instruction}
+          as="textarea"
+          rows={3}
+        />
       </Form.Group>
       {form.ingredients.length > 0 && (
         <IngredientTable
@@ -169,7 +98,7 @@ export default function RecipeForm() {
       )}
       <IngredientForm onAdd={handleAddIngredient} />
       <Button onClick={handleSubmit} variant="primary" type="submit">
-        Create
+        {isUpdate ? "Update" : "Create"}
       </Button>
     </Form>
   );

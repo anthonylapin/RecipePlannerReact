@@ -15,12 +15,17 @@ class DbContext {
   async readData() {
     try {
       const recipesJson = await readFile(this.#pathToRecipesJson, "utf-8");
-      this.recipes = JSON.parse(recipesJson);
+      this.recipes = recipesJson === "" ? [] : JSON.parse(recipesJson);
     } catch (error) {}
   }
 
   async saveChanges() {
-    const data = JSON.stringify(this.recipes, null, 2);
+    console.log(this.recipes);
+    const data = JSON.stringify(
+      this.recipes.sort((a, b) => a.id - b.id),
+      null,
+      2
+    );
     try {
       await writeFile(this.#pathToRecipesJson, data, "utf-8");
     } catch (error) {

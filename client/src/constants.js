@@ -1,8 +1,14 @@
 export const recipeRoute = "/recipes";
 export const recipeCreateRoute = "/recipes/create";
-export const recipeUpdateRoute = "/recipes/update";
+export const recipeUpdateRoute = "/recipes/update/:id";
 export const shoppingCartRoute = "/shoppingCart";
+export const errorRoute = "/error";
+export const shoppingCart = "/shoppingCart";
 
 export const actionTypes = {
   FETCH_RECIPES: "FETCH_RECIPES",
+  ADD_RECIPE: "ADD_RECIPE",
+  UPDATE_RECIPE: "UPDATE_RECIPE",
+  DELETE_RECIPE: "DELETE_RECIPE",
+  LOADING: "LOADING",
 };
