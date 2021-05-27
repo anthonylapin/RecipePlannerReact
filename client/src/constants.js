@@ -12,3 +12,15 @@ export const actionTypes = {
   DELETE_RECIPE: "DELETE_RECIPE",
   LOADING: "LOADING",
 };
+
+export const cardNavKeys = {
+  defaultInfo: "#default",
+  ingredients: "#ingredients",
+};
+
+export const initialRecipeFormState = {
+  id: "",
+  name: "",
+  instruction: "",
+  ingredients: [],
+};

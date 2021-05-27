@@ -20,7 +20,6 @@ class DbContext {
   }
 
   async saveChanges() {
-    console.log(this.recipes);
     const data = JSON.stringify(
       this.recipes.sort((a, b) => a.id - b.id),
       null,

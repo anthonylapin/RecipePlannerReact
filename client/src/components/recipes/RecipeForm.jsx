@@ -4,13 +4,7 @@ import { validate } from "validate.js";
 import IngredientForm from "../ingredients/IngredientForm";
 import IngredientTable from "../ingredients/IngredientTable";
 import { recipeFormConstraints } from "../../constraints";
-
-const initialFormState = {
-  id: "",
-  name: "",
-  instruction: "",
-  ingredients: [],
-};
+import { initialRecipeFormState as initialFormState } from "../../constants";
 
 export default function RecipeForm({ onSubmit, recipe, isUpdate }) {
   const [form, setForm] = useState(recipe ? recipe : initialFormState);

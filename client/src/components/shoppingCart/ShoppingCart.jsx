@@ -6,62 +6,43 @@ import CartSummaryBox from "./CartSummaryBox";
 export default function ShoppingCart() {
   const recipes = useSelector((state) => state.recipes.recipes);
   const [recipeItems, setRecipeItems] = useState([]);
-  const [cartItems, setCartItems] = useState([]);
+
+  const handleSetRecipeItems = (items) => {
+    setRecipeItems(
+      items.sort((a, b) => {
+        const [name1, name2] = [a.recipe.name, b.recipe.name];
+        if (name1 < name2) {
+          return -1;
+        }
+        if (name1 > b.recipe.name) {
+          return 1;
+        }
+        return 0;
+      })
+    );
+  };
 
   useEffect(() => {
-    setRecipeItems(recipes.map((recipe) => ({ recipe, quantity: 0 })));
+    handleSetRecipeItems(recipes.map((recipe) => ({ recipe, quantity: 0 })));
   }, [recipes]);
 
   const handleAddRecipeToCart = (id) => {
     const item = recipeItems.find((i) => i.recipe.id === id);
-    setRecipeItems([
+    const newItem = { ...item, quantity: item.quantity + 1 };
+    handleSetRecipeItems([
       ...recipeItems.filter((i) => i.recipe.id !== id),
-      { ...item, quantity: item.quantity + 1 },
+      newItem,
     ]);
-    changeCartItems();
   };
 
   const handleRemoveRecipeFromCart = (id) => {
     const item = recipeItems.find((i) => i.recipe.id === id);
     if (item.quantity > 0) {
-      setRecipeItems([
+      handleSetRecipeItems([
         ...recipeItems.filter((i) => i.recipe.id !== id),
         { ...item, quantity: item.quantity - 1 },
       ]);
     }
-    changeCartItems();
-  };
-
-  const changeCartItems = () => {
-    const ingredientsAreEqual = (a, b) =>
-      a.name === b.name && a.measurementValue === b.measurementValue;
-
-    const ingredientsToBuy = recipeItems.reduce(
-      (arr, { quantity: multiplier, recipe }) => {
-        return recipe.ingredients
-          .map((i) => ({
-            ...i,
-            quantity: Number(i.quantity) * multiplier,
-          }))
-          .reduce((acc, ingredient) => {
-            const element = acc.find((i) => ingredientsAreEqual(i, ingredient));
-            if (element) {
-              return [
-                ...acc.filter((el) => !ingredientsAreEqual(el, element)),
-                {
-                  ...element,
-                  quantity:
-                    Number(element.quantity) + Number(ingredient.quantity),
-                },
-              ];
-            }
-            return [...acc, ingredient];
-          }, arr);
-      },
-      []
-    );
-
-    console.log(ingredientsToBuy);
   };
 
   return (
@@ -71,7 +52,7 @@ export default function ShoppingCart() {
         onAdd={handleAddRecipeToCart}
         onRemove={handleRemoveRecipeFromCart}
       />
-      <CartSummaryBox cartItems={cartItems} />
+      <CartSummaryBox items={recipeItems} />
     </>
   );
 }
