@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import { sortCartItemsByNameComparator } from "../../lib/shoppingCart";
+import { sortCartItemsByNameComparator } from "../../lib/sortComparators";
 import RecipesTable from "../recipes/RecipesTable";
 import CartSummaryBox from "./CartSummaryBox";
 

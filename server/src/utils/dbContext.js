@@ -1,34 +1,32 @@
-import fs from "fs";
-import util from "util";
+import ApiError from "./apiError";
+import { readFile } from "./promisifyFile";
+import { recipesComparator } from "./recipe";
 
-const readFile = util.promisify(fs.readFile);
-const writeFile = util.promisify(fs.writeFile);
+const pathToRecipesJson = `${__dirname}/../static/recipes.json`;
+const utf8 = "utf-8";
 
 class DbContext {
+  recipes = [];
+
   constructor() {
     this.readData().then(() => {});
   }
 
-  recipes = [];
-  #pathToRecipesJson = `${__dirname}/../static/recipes.json`;
-
   async readData() {
     try {
-      const recipesJson = await readFile(this.#pathToRecipesJson, "utf-8");
+      const recipesJson = await readFile(pathToRecipesJson, utf8);
       this.recipes = recipesJson === "" ? [] : JSON.parse(recipesJson);
-    } catch (error) {}
+    } catch (error) {
+      throw new ApiError.internal("Error while reading recipes.json");
+    }
   }
 
   async saveChanges() {
-    const data = JSON.stringify(
-      this.recipes.sort((a, b) => a.id - b.id),
-      null,
-      2
-    );
+    const data = JSON.stringify(this.recipes.sort(recipesComparator), null, 2);
     try {
-      await writeFile(this.#pathToRecipesJson, data, "utf-8");
+      await writeFile(pathToRecipesJson, data, utf8);
     } catch (error) {
-      throw new Error(error.message);
+      throw new ApiError.internal("Error while saving recipes.json");
     }
   }
 }
