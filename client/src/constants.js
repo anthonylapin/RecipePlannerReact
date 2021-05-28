@@ -13,6 +13,14 @@ export const actionTypes = {
   LOADING: "LOADING",
 };
 
+export const loadingReducerDefaultState = {
+  isLoading: false,
+};
+
+export const recipeReducerDefaultState = {
+  recipes: [],
+};
+
 export const cardNavKeys = {
   defaultInfo: "#default",
   ingredients: "#ingredients",

@@ -1,8 +1,8 @@
 import RecipeForm from "./RecipeForm";
 import axios from "axios";
 import { useDispatch } from "react-redux";
-import { addRecipeAction } from "../../store/recipeReducer";
-import { loadingAction } from "../../store/loadingReducer";
+import { addRecipeAction } from "../../actions/recipes";
+import { loadingAction } from "../../actions/loading";
 import { useHistory } from "react-router-dom";
 
 export default function CreateRecipe() {

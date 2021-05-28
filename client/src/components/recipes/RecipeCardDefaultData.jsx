@@ -1,6 +1,6 @@
 import { Button, ButtonGroup, Card } from "react-bootstrap";
 import { useDispatch } from "react-redux";
-import { deleteRecipe } from "../../asyncActions/recipes";
+import { deleteRecipe } from "../../actions/recipes";
 
 export const RecipeCardDefaultData = ({ id, name, instruction }) => {
   const dispatch = useDispatch();

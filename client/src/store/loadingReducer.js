@@ -1,8 +1,7 @@
-import { actionTypes } from "../constants";
-
-const defaultState = {
-  isLoading: false,
-};
+import {
+  actionTypes,
+  loadingReducerDefaultState as defaultState,
+} from "../constants";
 
 export const loadingReducer = (state = defaultState, action) => {
   switch (action.type) {
@@ -12,8 +11,3 @@ export const loadingReducer = (state = defaultState, action) => {
       return state;
   }
 };
-
-export const loadingAction = (payload) => ({
-  type: actionTypes.LOADING,
-  payload,
-});

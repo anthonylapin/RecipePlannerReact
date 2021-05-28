@@ -4,8 +4,8 @@ import { useDispatch } from "react-redux";
 import { useHistory, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import NotFound from "../NotFound";
-import { updateRecipeAction } from "../../store/recipeReducer";
-import { loadingAction } from "../../store/loadingReducer";
+import { updateRecipeAction } from "../../actions/recipes";
+import { loadingAction } from "../../actions/loading";
 
 export default function UpdateRecipe() {
   const dispatch = useDispatch();

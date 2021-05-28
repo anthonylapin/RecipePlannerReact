@@ -1,8 +1,7 @@
-import { actionTypes } from "../constants";
-
-const defaultState = {
-  recipes: [],
-};
+import {
+  actionTypes,
+  recipeReducerDefaultState as defaultState,
+} from "../constants";
 
 export const recipeReducer = (state = defaultState, action) => {
   switch (action.type) {
@@ -27,23 +26,3 @@ export const recipeReducer = (state = defaultState, action) => {
       return state;
   }
 };
-
-export const fetchRecipesAction = (payload) => ({
-  type: actionTypes.FETCH_RECIPES,
-  payload,
-});
-
-export const addRecipeAction = (payload) => ({
-  type: actionTypes.ADD_RECIPE,
-  payload,
-});
-
-export const updateRecipeAction = (payload) => ({
-  type: actionTypes.UPDATE_RECIPE,
-  payload,
-});
-
-export const deleteRecipeAction = (payload) => ({
-  type: actionTypes.DELETE_RECIPE,
-  payload,
-});

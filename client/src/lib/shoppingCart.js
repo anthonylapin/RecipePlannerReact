@@ -35,3 +35,14 @@ export function calculateShoppingCart(items) {
   const ingredients = convertRecipeItemsToIngredients(items);
   return combineEqualIngredients(ingredients);
 }
+
+export const sortCartItemsByNameComparator = (a, b) => {
+  const [name1, name2] = [a.recipe.name, b.recipe.name];
+  if (name1 < name2) {
+    return -1;
+  }
+  if (name1 > b.recipe.name) {
+    return 1;
+  }
+  return 0;
+};

@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
+import { sortCartItemsByNameComparator } from "../../lib/shoppingCart";
 import RecipesTable from "../recipes/RecipesTable";
 import CartSummaryBox from "./CartSummaryBox";
 
@@ -8,18 +9,7 @@ export default function ShoppingCart() {
   const [recipeItems, setRecipeItems] = useState([]);
 
   const handleSetRecipeItems = (items) => {
-    setRecipeItems(
-      items.sort((a, b) => {
-        const [name1, name2] = [a.recipe.name, b.recipe.name];
-        if (name1 < name2) {
-          return -1;
-        }
-        if (name1 > b.recipe.name) {
-          return 1;
-        }
-        return 0;
-      })
-    );
+    setRecipeItems(items.sort(sortCartItemsByNameComparator));
   };
 
   useEffect(() => {
