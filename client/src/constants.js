@@ -24,3 +24,9 @@ export const initialRecipeFormState = {
   instruction: "",
   ingredients: [],
 };
+
+export const initialIngredientFormState = {
+  name: "",
+  quantity: "",
+  measurementValue: "",
+};

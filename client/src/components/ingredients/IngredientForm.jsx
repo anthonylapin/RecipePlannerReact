@@ -1,29 +1,9 @@
 import { useState } from "react";
 import { Button, Form, Col, Row } from "react-bootstrap";
 import validate from "validate.js";
+import { initialIngredientFormState } from "../../constants";
 import { ingredientFormConstraints } from "../../constraints";
-
-const initialIngredientFormState = {
-  name: "",
-  quantity: "",
-  measurementValue: "",
-};
-
-function getIngredientFormErrors({
-  name: nameErrors,
-  quantity: quantityErrors,
-  measurementValue: unitsErrors,
-}) {
-  return {
-    name: nameErrors ? nameErrors.reduce((txt, err) => txt + err, "") : "",
-    quantity: quantityErrors
-      ? quantityErrors.reduce((txt, err) => txt + err, "")
-      : "",
-    measurementValue: unitsErrors
-      ? unitsErrors.reduce((txt, err) => txt + err, "")
-      : "",
-  };
-}
+import { getIngredientFormErrors } from "../../lib/ingredient";
 
 export default function IngredientForm({ onAdd }) {
   const [ingredient, setIngredient] = useState(initialIngredientFormState);
