@@ -20,3 +20,21 @@
 ## Other
 
 - recipes are stored in recipes.json
+- Application should use the same server (so only one port occupied) for serving static (react) and dynamic (data in rest) content (Production build)
+
+## Instruction to run
+
+- npm install
+- fill in .dotenv file by using template from .env-example file
+
+### Production
+
+- cd server
+- npm run buildServer
+- npm run buildClient
+- npm start
+
+### Development
+
+- cd server && npm run dev
+- cd client && npm start
