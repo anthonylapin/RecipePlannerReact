@@ -29,6 +29,7 @@
 
 ### Production
 
+- create ./dist directory in server folder (i.e. mkdir dist) if it doesn't exist
 - cd server
 - npm run buildServer
 - npm run buildClient
