@@ -35,7 +35,7 @@
 - npm run buildClient
 - npm start
 
-### Development
+### Development (server)
 
-- cd server && npm run dev
-- cd client && npm start
+- cd server && npm run dev (in one terminal)
+- cd client && npm start (in second terminal)
