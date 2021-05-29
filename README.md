@@ -25,7 +25,7 @@
 ## Instruction to run
 
 - npm install
-- fill in .dotenv file by using template from .env-example file
+- create and fill in .env file by using template from .env-example file
 
 ### Production
 
