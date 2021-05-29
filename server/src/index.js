@@ -20,10 +20,9 @@ app.use(errorMiddleware);
 
 if (isProduction) {
   app.use(express.static(clientStaticPath));
+  app.get("*", (req, res) => {
+    res.sendFile(clientStaticFile);
+  });
 }
-
-app.get("*", (req, res) => {
-  res.sendFile(isProduction ? clientStaticFile : developmentStaticFile);
-});
 
 app.listen(5000, () => console.log(`Server is on port ${5000}`));
